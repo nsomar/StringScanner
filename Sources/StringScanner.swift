@@ -7,36 +7,6 @@
 //
 
 
-
-/// Scanner Result represents a result retured from the string scanner
-///
-/// - value: A vaule was found
-/// - none:  No value was found,
-///   this is used when peeking or scanning until a string or regex pattern
-///   if the pattern is not found, .none is retured
-/// - end:   We reached the end of the string
-public enum ScannerResult {
-  case value(String)
-  case none
-  case end
-  
-  fileprivate func performIfValue(block: (() -> ())) -> ScannerResult {
-    if case .value = self {
-      block()
-    }
-    
-    return self
-  }
-}
-
-public protocol Containable {
-  associatedtype Bound
-  func contains(_ element: Bound) -> Bool
-}
-
-extension Range: Containable { }
-extension ClosedRange: Containable { }
-
 public class StringScanner {
   
   private let string: String
@@ -86,13 +56,11 @@ public class StringScanner {
     return .value(subString)
   }
   
-  public func peek<T: Containable>(untilRange range: T) -> ScannerResult
-    where T.Bound == String {
+  public func peek(untilRange range: Containable) -> ScannerResult {
       return _peek(untilRange: range).0
   }
   
-  public func peek<T: Containable>(forRange range: T) -> ScannerResult
-    where T.Bound == String {
+  public func peek(forRange range: Containable) -> ScannerResult {
       return _peek(untilRange: range, includeLast: true).0
   }
   
@@ -126,8 +94,7 @@ public class StringScanner {
     }
   }
   
-  public func scan<T: Containable>(untilRange range: T) -> ScannerResult
-    where T.Bound == String {
+  public func scan(untilRange range: Containable) -> ScannerResult {
       let res = _peek(untilRange: range)
       
       return res.0.performIfValue {
@@ -135,8 +102,7 @@ public class StringScanner {
       }
   }
   
-  public func scan<T: Containable>(forRange range: T) -> ScannerResult
-    where T.Bound == String {
+  public func scan(forRange range: Containable) -> ScannerResult {
       let res = _peek(untilRange: range, includeLast: true)
       
       return res.0.performIfValue {
@@ -196,16 +162,15 @@ public class StringScanner {
     return (retString, position)
   }
   
-  private func _peek<T: Containable>
-    (untilRange: T, includeLast: Bool = false) -> (ScannerResult, Int?)
-    where T.Bound == String {
+  private func _peek
+    (untilRange: Containable, includeLast: Bool = false) -> (ScannerResult, Int?) {
       
       if index >= stringLength {
         return (.end, nil)
       }
       
       for (index, character) in remainingString.characters.enumerated() {
-        if untilRange.contains(String(character)) {
+        if untilRange.contains(string: String(character)) {
           let end = endIndex(forString: remainingString, length: index + (includeLast ? 1 : 0))
           
           let str = remainingString.substring(to: end)
