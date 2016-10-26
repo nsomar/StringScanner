@@ -7,12 +7,20 @@
 //
 
 
-enum ScannerResult {
+
+/// Scanner Result represents a result retured from the string scanner
+///
+/// - value: A vaule was found
+/// - none:  No value was found,
+///   this is used when peeking or scanning until a string or regex pattern
+///   if the pattern is not found, .none is retured
+/// - end:   We reached the end of the string
+public enum ScannerResult {
   case value(String)
   case none
   case end
   
-  func performIfValue(block: (() -> ())) -> ScannerResult {
+  fileprivate func performIfValue(block: (() -> ())) -> ScannerResult {
     if case .value = self {
       block()
     }
@@ -21,30 +29,134 @@ enum ScannerResult {
   }
 }
 
-class StringScanner {
+public protocol Containable {
+  associatedtype Bound
+  func contains(_ element: Bound) -> Bool
+}
+
+extension Range: Containable { }
+extension ClosedRange: Containable { }
+
+public class StringScanner {
   
-  let string: String
-  var index: Int
+  private let string: String
+  private var index: Int
   
-  var stringLength: Int {
+  private var stringLength: Int {
     return string.lengthOfBytes(using: .utf8)
   }
   
-  var stringIndex: String.Index {
+  private var stringIndex: String.Index {
     return string.index(string.startIndex, offsetBy: index)
   }
   
-  var remainingString: String {
+  private var remainingString: String {
     return string.substring(from: stringIndex)
   }
+  
   
   init(string: String) {
     self.string = string
     self.index = 0
   }
   
+  // FIXME: Cross compile PCRE as posix regex does not have non greedy regex
   
-  func endIndex(forString string: String, length: Int) -> String.Index {
+  public func peek(untilPattern pattern: String) -> ScannerResult {
+    return _peek(untilPattern: pattern).0
+  }
+  
+  public func peek(untilString search: String) -> ScannerResult {
+    return _peek(untilString: search).0
+  }
+  
+  public func peek(forString search: String) -> ScannerResult {
+    return _peek(forString: search).0
+  }
+  
+  public func peek(length: Int) -> ScannerResult {
+    if index >= stringLength {
+      return .end
+    }
+    
+    let end = endIndex(forString: string, length: index + length)
+    
+    let subString = string.substring(with: stringIndex..<end)
+    
+    return .value(subString)
+  }
+  
+  public func peek<T: Containable>(untilRange range: T) -> ScannerResult
+    where T.Bound == String {
+      return _peek(untilRange: range).0
+  }
+  
+  public func peek<T: Containable>(forRange range: T) -> ScannerResult
+    where T.Bound == String {
+      return _peek(untilRange: range, includeLast: true).0
+  }
+  
+  public func scan(length: Int) -> ScannerResult {
+    return peek(length: length).performIfValue {
+      index += length
+    }
+  }
+  
+  public func scan(untilString search: String) -> ScannerResult {
+    let res = _peek(untilString: search)
+    
+    return res.0.performIfValue {
+      index = res.1!
+    }
+  }
+  
+  public func scan(untilPattern pattern: String) -> ScannerResult {
+    let res = _peek(untilPattern: pattern)
+    
+    return res.0.performIfValue {
+      index = res.1!
+    }
+  }
+  
+  public func scan(forString search: String) -> ScannerResult {
+    let res = _peek(forString: search)
+    
+    return res.0.performIfValue {
+      index = res.1!
+    }
+  }
+  
+  public func scan<T: Containable>(untilRange range: T) -> ScannerResult
+    where T.Bound == String {
+      let res = _peek(untilRange: range)
+      
+      return res.0.performIfValue {
+        index = res.1!
+      }
+  }
+  
+  public func scan<T: Containable>(forRange range: T) -> ScannerResult
+    where T.Bound == String {
+      let res = _peek(untilRange: range, includeLast: true)
+      
+      return res.0.performIfValue {
+        index = res.1!
+      }
+  }
+  
+  public func drop(length: Int) -> Bool {
+    if index + length > stringLength {
+      index = stringLength
+      return false
+    }
+    
+    index += length
+    return true
+  }
+  
+  // MARK: Private
+  
+  private func endIndex(forString string: String, length: Int) -> String.Index {
     if length > stringLength {
       return string.endIndex
     }
@@ -52,13 +164,7 @@ class StringScanner {
     return string.index(string.startIndex, offsetBy: length)
   }
   
-  // FIXME: Cross compile PCRE as posix regex does not have non greedy regex
-  
-  func peek(untilPattern pattern: String) -> ScannerResult {
-    return _peek(untilPattern: pattern).0
-  }
-  
-  func _peek(untilPattern pattern: String) -> (ScannerResult, Int?) {
+  private func _peek(untilPattern pattern: String) -> (ScannerResult, Int?) {
     if index >= stringLength {
       return (.end, nil)
     }
@@ -74,11 +180,7 @@ class StringScanner {
     return (.value(captured), captured.lengthOfBytes(using: .utf8))
   }
   
-  func peek(untilString search: String) -> ScannerResult {
-    return _peek(untilString: search).0
-  }
-  
-  func _peek(untilString search: String) -> (ScannerResult, Int?) {
+  private func _peek(untilString search: String) -> (ScannerResult, Int?) {
     if index >= stringLength {
       return (.end, nil)
     }
@@ -94,47 +196,37 @@ class StringScanner {
     return (retString, position)
   }
   
-  func peek(length: Int) -> ScannerResult {
+  private func _peek<T: Containable>
+    (untilRange: T, includeLast: Bool = false) -> (ScannerResult, Int?)
+    where T.Bound == String {
+      
+      if index >= stringLength {
+        return (.end, nil)
+      }
+      
+      for (index, character) in remainingString.characters.enumerated() {
+        if untilRange.contains(String(character)) {
+          let end = endIndex(forString: remainingString, length: index + (includeLast ? 1 : 0))
+          
+          let str = remainingString.substring(to: end)
+          return (.value(str), index + (includeLast ? 1 : 0))
+        }
+      }
+      
+      return (.none, nil)
+  }
+  
+  private func _peek(forString search: String) -> (ScannerResult, Int?) {
     if index >= stringLength {
-      return .end
+      return (.end, nil)
     }
     
-    let end = endIndex(forString: string, length: index + length)
     
-    let subString = string.substring(with: stringIndex..<end)
-    
-    return .value(subString)
-  }
-  
-  func scan(length: Int) -> ScannerResult {
-    return peek(length: length).performIfValue {
-      index += length
-    }
-  }
-  
-  func scan(untilString search: String) -> ScannerResult {
-    let res = _peek(untilString: search)
-    
-    return res.0.performIfValue {
-      index = res.1!
-    }
-  }
-  
-  func scan(untilPattern pattern: String) -> ScannerResult {
-    let res = _peek(untilPattern: pattern)
-    
-    return res.0.performIfValue {
-      index = res.1!
-    }
-  }
-  
-  func drop(length: Int) -> Bool {
-    if length > stringLength {
-      return false
+    if remainingString.hasPrefix(search) {
+      return (.value(search), index + search.lengthOfBytes(using: .utf8))
     }
     
-    index += length
-    return true
+    return (.none, nil)
   }
   
 }
