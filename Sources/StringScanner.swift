@@ -97,7 +97,7 @@ public class StringScanner {
   
   /// Peek until a range of chacaters is found
   /// Peek does not advance the internal string index
-  /// See `RangeSet` for ready made range of characters
+  /// See `CharacterSet` for ready made range of characters
   ///
   /// - parameter range: the range to search
   ///
@@ -109,7 +109,7 @@ public class StringScanner {
   
   /// Peek until a range of chacaters is found, return the character found too
   /// Peek does not advance the internal string index
-  /// See `RangeSet` for ready made range of characters
+  /// See `CharacterSet` for ready made range of characters
   ///
   /// - parameter range: the range to search
   ///
@@ -179,7 +179,7 @@ public class StringScanner {
   
   /// Scan until a characters of string is found
   /// Scan advances the internal string index
-  /// See `RangeSet` for ready made range of characters
+  /// See `CharacterSet` for ready made range of characters
   ///
   /// - parameter range: the range to search
   ///
@@ -195,7 +195,7 @@ public class StringScanner {
   
   /// Scan until a characters of string is found, , return the character found too
   /// Scan advances the internal string index
-  /// See `RangeSet` for ready made range of characters
+  /// See `CharacterSet` for ready made range of characters
   ///
   /// - parameter range: the range to search
   ///
