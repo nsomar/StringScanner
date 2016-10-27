@@ -28,24 +28,33 @@ public enum ScannerResult {
 }
 
 public protocol Containable {
-  func contains(string element: String) -> Bool
+  func contains(character element: Character) -> Bool
 }
 
 extension Range: Containable {
-  public func contains(string element: String) -> Bool {
-    guard let x = self as? Range<String> else {
-      return false
+  public func contains(character element: Character) -> Bool {
+    if let x = self as? Range<Character> {
+      return x.contains(element)
     }
     
-    return x.contains(element)
+    if let x = self as? Range<String> {
+      return x.contains(String(element))
+    }
+    
+    return false
   }
 }
 extension ClosedRange: Containable {
-  public func contains(string element: String) -> Bool {
-    guard let x = self as? ClosedRange<String> else {
-      return false
+  public func contains(character element: Character) -> Bool {
+    
+    if let x = self as? ClosedRange<Character> {
+      return x.contains(element)
     }
     
-    return x.contains(element)
+    if let x = self as? ClosedRange<String> {
+      return x.contains(String(element))
+    }
+    
+    return false
   }
 }

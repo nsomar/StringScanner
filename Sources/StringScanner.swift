@@ -170,7 +170,7 @@ public class StringScanner {
       }
       
       for (index, character) in remainingString.characters.enumerated() {
-        if untilRange.contains(string: String(character)) {
+        if untilRange.contains(character: character) {
           let end = endIndex(forString: remainingString, length: index + (includeLast ? 1 : 0))
           
           let str = remainingString.substring(to: end)
