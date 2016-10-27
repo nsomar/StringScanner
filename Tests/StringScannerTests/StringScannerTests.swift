@@ -112,7 +112,7 @@ class StringScannerTests: XCTestCase {
     
     XCTAssertFalse(scanner.drop(length: 100))
     
-    if case let .value(str) = scanner.peek(length: 5) {
+    if case .value = scanner.peek(length: 5) {
       XCTFail()
     } else {
       
@@ -424,9 +424,50 @@ class StringScannerTests: XCTestCase {
     }
   }
   
+  func testItReturnsEmptyString() {
+    let scanner = StringScanner(string: "Hello my name my omar8")
+    
+    if case let .value(str)  = scanner.scan(forRange: "0"..."8") {
+      XCTAssertEqual(str, "Hello my name my omar8")
+    } else {
+      XCTFail()
+    }
+    
+    XCTAssertEqual(scanner.remainingString, "")
+  }
+  
   static var allTests : [(String, (StringScannerTests) -> () throws -> Void)] {
     return [
-      ("testExample", testCanScanForCharacters),
+      ("testCanScanForCharacters", testCanScanForCharacters),
+      ("testItKeepsScanning", testItKeepsScanning),
+      ("testItScansToTheLast", testItScansToTheLast),
+      ("testItReturnEndIfOverScan", testItReturnEndIfOverScan),
+      ("testItCanPeekAndNotProgress", testItCanPeekAndNotProgress),
+      ("testItCanDropAndPeek", testItCanDropAndPeek),
+      ("testItCantDropAfterStringEnd", testItCantDropAfterStringEnd),
+      ("testItCanPeekAndScanProgress", testItCanPeekAndScanProgress),
+      ("testItCanPeekUntilAPattern", testItCanPeekUntilAPattern),
+      ("testItCanScanUntilAPattern", testItCanScanUntilAPattern),
+//      ("XtestItCanPeekUntilAPatternNotGreedy", XtestItCanPeekUntilAPatternNotGreedy),
+      ("testItCanPeekUntilAString", testItCanPeekUntilAString),
+      ("testItCanScanUntilAString", testItCanScanUntilAString),
+      ("testItCanScanUntilAStringAndTheEnd", testItCanScanUntilAStringAndTheEnd),
+      ("testItCanPeekForString", testItCanPeekForString),
+      ("testItDoesNotCrashIfItPeeksForNonFoundString", testItDoesNotCrashIfItPeeksForNonFoundString),
+      ("testItCanScanForString", testItCanScanForString),
+      ("testItDoesNotCrashIfItScanForNonFoundString", testItDoesNotCrashIfItScanForNonFoundString),
+      ("testItDoesNotScanBeyondLength", testItDoesNotScanBeyondLength),
+      ("testItCanPeekUntilRange", testItCanPeekUntilRange),
+      ("testItDoesNotCrashIfItPeeksForNonFoundStringInRange", testItDoesNotCrashIfItPeeksForNonFoundStringInRange),
+      ("testItCanScanForStringUntilRange", testItCanScanForStringUntilRange),
+      ("testItDoesNotCrashIfItScanForNonFoundStringForRange", testItDoesNotCrashIfItScanForNonFoundStringForRange),
+      ("testItDoesNotScanBeyondLengthForRange", testItDoesNotScanBeyondLengthForRange),
+      ("testItCanPeekRange", testItCanPeekRange),
+      ("testItDoesNotCrashIfItPeeksForNonFoundStringToRange", testItDoesNotCrashIfItPeeksForNonFoundStringToRange),
+      ("testItCanScanForStringToRange", testItCanScanForStringToRange),
+      ("testItDoesNotCrashIfItScanForNonFoundStringToRange", testItDoesNotCrashIfItScanForNonFoundStringToRange),
+      ("testItDoesNotScanBeyondLengthToRange", testItDoesNotScanBeyondLengthToRange),
+      ("testItReturnsEmptyString", testItReturnsEmptyString)
     ]
   }
 }

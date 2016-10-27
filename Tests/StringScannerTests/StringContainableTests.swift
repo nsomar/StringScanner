@@ -92,4 +92,16 @@ class StringContainableTests: XCTestCase {
     let b4 = RangeSet.alphaNumeric.containable.contains(character:  " ")
     XCTAssertFalse(b4)
   }
+  
+  static var allTests : [(String, (StringContainableTests) -> () throws -> Void)] {
+    return [
+      ("testThatItMatchSmallLetters", testThatItMatchSmallLetters),
+      ("testThatItMatchCapitalLetters", testThatItMatchCapitalLetters),
+      ("testThatItMatchAllLetters", testThatItMatchAllLetters),
+      ("testThatItMatchNumbersLetters", testThatItMatchNumbersLetters),
+      ("testThatItMatchSpaceLetters", testThatItMatchSpaceLetters),
+      ("testThatItMatchAlphaNumericLetters", testThatItMatchAlphaNumericLetters)
+    ]
+  }
+
 }

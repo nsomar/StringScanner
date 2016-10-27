@@ -7,6 +7,9 @@
 //
 
 
+
+/// String Scanner Implementation, similar to NSScanner
+/// This class holds an internal index integer that gets advanced as the string is scanned
 public class StringScanner {
   
   private let string: String
@@ -20,11 +23,18 @@ public class StringScanner {
     return string.index(string.startIndex, offsetBy: index)
   }
   
-  private var remainingString: String {
+  
+  /// Returns the remaining string
+  public var remainingString: String {
     return string.substring(from: stringIndex)
   }
   
   
+  /// Initialize a StringScanner
+  ///
+  /// - parameter string: The string to scan
+  ///
+  /// - returns:  a new StringScanner
   init(string: String) {
     self.string = string
     self.index = 0
@@ -32,18 +42,13 @@ public class StringScanner {
   
   // FIXME: Cross compile PCRE as posix regex does not have non greedy regex
   
-  public func peek(untilPattern pattern: String) -> ScannerResult {
-    return _peek(untilPattern: pattern).0
-  }
   
-  public func peek(untilString search: String) -> ScannerResult {
-    return _peek(untilString: search).0
-  }
-  
-  public func peek(forString search: String) -> ScannerResult {
-    return _peek(forString: search).0
-  }
-  
+  /// Peek for a string length
+  /// Peek does not advance the internal string index
+  ///
+  /// - parameter length: the length to return
+  ///
+  /// - returns: returns a scanner result
   public func peek(length: Int) -> ScannerResult {
     if index >= stringLength {
       return .end
@@ -56,20 +61,83 @@ public class StringScanner {
     return .value(subString)
   }
   
+  
+  /// Peek until a pattern is found
+  /// Peek does not advance the internal string index
+  ///
+  /// - parameter pattern: a regex pattern
+  ///
+  /// - returns: returns a scanner result
+  public func peek(untilPattern pattern: String) -> ScannerResult {
+    return _peek(untilPattern: pattern).0
+  }
+  
+  
+  /// Peek until a string is found
+  /// Peek does not advance the internal string index
+  ///
+  /// - parameter search: the string to search
+  ///
+  /// - returns: returns a scanner result
+  public func peek(untilString search: String) -> ScannerResult {
+    return _peek(untilString: search).0
+  }
+  
+  
+  /// Peek until for a particular string
+  /// Peek does not advance the internal string index
+  ///
+  /// - parameter search: the string to search
+  ///
+  /// - returns: returns a scanner result
+  public func peek(forString search: String) -> ScannerResult {
+    return _peek(forString: search).0
+  }
+  
+  
+  /// Peek until a range of chacaters is found
+  /// Peek does not advance the internal string index
+  /// See `RangeSet` for ready made range of characters
+  ///
+  /// - parameter range: the range to search
+  ///
+  /// - returns: returns a scanner result
   public func peek(untilRange range: Containable) -> ScannerResult {
       return _peek(untilRange: range).0
   }
   
+  
+  /// Peek until a range of chacaters is found, return the character found too
+  /// Peek does not advance the internal string index
+  /// See `RangeSet` for ready made range of characters
+  ///
+  /// - parameter range: the range to search
+  ///
+  /// - returns: returns a scanner result
   public func peek(forRange range: Containable) -> ScannerResult {
       return _peek(untilRange: range, includeLast: true).0
   }
   
+  
+  /// Scan for a string length
+  /// Scan advances the internal string index
+  ///
+  /// - parameter length: the length to scan
+  ///
+  /// - returns: returns a scanner result
   public func scan(length: Int) -> ScannerResult {
     return peek(length: length).performIfValue {
       index += length
     }
   }
   
+  
+  /// Scan until a string is found
+  /// Scan advances the internal string index
+  ///
+  /// - parameter search: the string to search
+  ///
+  /// - returns: returns a scanner result
   public func scan(untilString search: String) -> ScannerResult {
     let res = _peek(untilString: search)
     
@@ -78,6 +146,13 @@ public class StringScanner {
     }
   }
   
+  
+  /// Scan until a regex pattern is found
+  /// Scan advances the internal string index
+  ///
+  /// - parameter search: the regex pattern to search
+  ///
+  /// - returns: returns a scanner result
   public func scan(untilPattern pattern: String) -> ScannerResult {
     let res = _peek(untilPattern: pattern)
     
@@ -86,6 +161,13 @@ public class StringScanner {
     }
   }
   
+  
+  /// Scan for a string
+  /// Scan advances the internal string index
+  ///
+  /// - parameter search: the string to search
+  ///
+  /// - returns: returns a scanner result
   public func scan(forString search: String) -> ScannerResult {
     let res = _peek(forString: search)
     
@@ -94,6 +176,14 @@ public class StringScanner {
     }
   }
   
+  
+  /// Scan until a characters of string is found
+  /// Scan advances the internal string index
+  /// See `RangeSet` for ready made range of characters
+  ///
+  /// - parameter range: the range to search
+  ///
+  /// - returns: returns a scanner result
   public func scan(untilRange range: Containable) -> ScannerResult {
       let res = _peek(untilRange: range)
       
@@ -102,6 +192,14 @@ public class StringScanner {
       }
   }
   
+  
+  /// Scan until a characters of string is found, , return the character found too
+  /// Scan advances the internal string index
+  /// See `RangeSet` for ready made range of characters
+  ///
+  /// - parameter range: the range to search
+  ///
+  /// - returns: returns a scanner result
   public func scan(forRange range: Containable) -> ScannerResult {
       let res = _peek(untilRange: range, includeLast: true)
       
@@ -110,6 +208,13 @@ public class StringScanner {
       }
   }
   
+  
+  /// Drop a certain amount of characters
+  /// drop advances the internal string index
+  ///
+  /// - parameter length: the character lenght to drop
+  ///
+  /// - returns: bool if there were enough characters in the string, otherwise returns false
   public func drop(length: Int) -> Bool {
     if index + length > stringLength {
       index = stringLength
