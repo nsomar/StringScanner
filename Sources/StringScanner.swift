@@ -102,8 +102,8 @@ public class StringScanner {
   /// - parameter range: the range to search
   ///
   /// - returns: returns a scanner result
-  public func peek(untilRange range: Containable) -> ScannerResult {
-      return _peek(untilRange: range).0
+  public func peek(untilCharacterSet characerSet: CharacterSet) -> ScannerResult {
+      return _peek(untilCharacterSet: characerSet).0
   }
   
   
@@ -114,8 +114,8 @@ public class StringScanner {
   /// - parameter range: the range to search
   ///
   /// - returns: returns a scanner result
-  public func peek(forRange range: Containable) -> ScannerResult {
-      return _peek(untilRange: range, includeLast: true).0
+  public func peek(forCharacterSet characterSet: CharacterSet) -> ScannerResult {
+      return _peek(untilCharacterSet: characterSet, includeLast: true).0
   }
   
   
@@ -184,8 +184,8 @@ public class StringScanner {
   /// - parameter range: the range to search
   ///
   /// - returns: returns a scanner result
-  public func scan(untilRange range: Containable) -> ScannerResult {
-      let res = _peek(untilRange: range)
+  public func scan(untilCharacterSet characterSet: CharacterSet) -> ScannerResult {
+      let res = _peek(untilCharacterSet: characterSet)
       
       return res.0.performIfValue {
         index = res.1!
@@ -200,8 +200,8 @@ public class StringScanner {
   /// - parameter range: the range to search
   ///
   /// - returns: returns a scanner result
-  public func scan(forRange range: Containable) -> ScannerResult {
-      let res = _peek(untilRange: range, includeLast: true)
+  public func scan(forCharacterSet characterSet: CharacterSet) -> ScannerResult {
+      let res = _peek(untilCharacterSet: characterSet, includeLast: true)
       
       return res.0.performIfValue {
         index = res.1!
@@ -268,14 +268,14 @@ public class StringScanner {
   }
   
   private func _peek
-    (untilRange: Containable, includeLast: Bool = false) -> (ScannerResult, Int?) {
+    (untilCharacterSet characterSet: CharacterSet, includeLast: Bool = false) -> (ScannerResult, Int?) {
       
       if index >= stringLength {
         return (.end, nil)
       }
       
       for (index, character) in remainingString.characters.enumerated() {
-        if untilRange.contains(character: character) {
+        if characterSet.contains(character: character) {
           let end = endIndex(forString: remainingString, length: index + (includeLast ? 1 : 0))
           
           let str = remainingString.substring(to: end)

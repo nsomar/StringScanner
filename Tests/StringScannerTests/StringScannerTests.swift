@@ -297,13 +297,13 @@ class StringScannerTests: XCTestCase {
   func testItCanPeekUntilRange() {
     let scanner = StringScanner(string: "aaaa bbbb cccc xame my omar")
     
-    if case let .value(str) = scanner.peek(untilRange: "x"..<"z") {
+    if case let .value(str) = scanner.peek(untilCharacterSet: .range("x"..<"z")) {
       XCTAssertEqual(str, "aaaa bbbb cccc ")
     } else {
       XCTFail()
     }
     
-    if case let .value(str) = scanner.peek(untilRange: "m"..<"o") {
+    if case let .value(str) = scanner.peek(untilCharacterSet: .range("m"..<"o")) {
       XCTAssertEqual(str, "aaaa bbbb cccc xa")
     } else {
       XCTFail()
@@ -313,7 +313,7 @@ class StringScannerTests: XCTestCase {
   func testItDoesNotCrashIfItPeeksForNonFoundStringInRange() {
     let scanner = StringScanner(string: "aaaa bbbb cccc xame my omar")
     
-    if case .none = scanner.peek(untilRange: "0"..<"9") {
+    if case .none = scanner.peek(untilCharacterSet: .range("0"..<"9")) {
       
     } else {
       XCTFail()
@@ -323,13 +323,13 @@ class StringScannerTests: XCTestCase {
   func testItCanScanForStringUntilRange() {
     let scanner = StringScanner(string: "aaaa bbbb cccc xame my omar")
     
-    if case let .value(str) = scanner.scan(untilRange: "x"..<"z") {
+    if case let .value(str) = scanner.scan(untilCharacterSet: .range("x"..<"z")) {
       XCTAssertEqual(str, "aaaa bbbb cccc ")
     } else {
       XCTFail()
     }
     
-    if case let .value(str) = scanner.scan(untilRange: "a"..<"m") {
+    if case let .value(str) = scanner.scan(untilCharacterSet: .range("a"..<"m")) {
       XCTAssertEqual(str, "x")
     } else {
       XCTFail()
@@ -339,7 +339,7 @@ class StringScannerTests: XCTestCase {
   func testItDoesNotCrashIfItScanForNonFoundStringForRange() {
     let scanner = StringScanner(string: "Hello my name my omar")
     
-    if case .none = scanner.scan(untilRange: "0"..<"9") {
+    if case .none = scanner.scan(untilCharacterSet: .range("0"..<"9")) {
       
     } else {
       XCTFail()
@@ -349,7 +349,7 @@ class StringScannerTests: XCTestCase {
   func testItDoesNotScanBeyondLengthForRange() {
     let scanner = StringScanner(string: "Hello my name my omar8")
     
-    if case let .value(str)  = scanner.scan(untilRange: "0"..<"9") {
+    if case let .value(str)  = scanner.scan(untilCharacterSet: .range("0"..<"9")) {
       XCTAssertEqual(str, "Hello my name my omar")
     } else {
       XCTFail()
@@ -359,13 +359,13 @@ class StringScannerTests: XCTestCase {
   func testItCanPeekRange() {
     let scanner = StringScanner(string: "aaaa bbbb cccc xame my omar")
     
-    if case let .value(str) = scanner.peek(forRange: "x"..<"z") {
+    if case let .value(str) = scanner.peek(forCharacterSet: .range("x"..<"z")) {
       XCTAssertEqual(str, "aaaa bbbb cccc x")
     } else {
       XCTFail()
     }
     
-    if case let .value(str) = scanner.peek(forRange: "m"..<"o") {
+    if case let .value(str) = scanner.peek(forCharacterSet: .range("m"..<"o")) {
       XCTAssertEqual(str, "aaaa bbbb cccc xam")
     } else {
       XCTFail()
@@ -375,7 +375,7 @@ class StringScannerTests: XCTestCase {
   func testItDoesNotCrashIfItPeeksForNonFoundStringToRange() {
     let scanner = StringScanner(string: "aaaa bbbb cccc xame my omar")
     
-    if case .none = scanner.peek(forRange: "0"..<"9") {
+    if case .none = scanner.peek(forCharacterSet: .range("0"..<"9")) {
       
     } else {
       XCTFail()
@@ -385,13 +385,13 @@ class StringScannerTests: XCTestCase {
   func testItCanScanForStringToRange() {
     let scanner = StringScanner(string: "aaaa bbbb cccc xame my omar")
     
-    if case let .value(str) = scanner.scan(forRange: "x"..<"z") {
+    if case let .value(str) = scanner.scan(forCharacterSet: .range("x"..<"z")) {
       XCTAssertEqual(str, "aaaa bbbb cccc x")
     } else {
       XCTFail()
     }
     
-    if case let .value(str) = scanner.scan(forRange: "d"..."e") {
+    if case let .value(str) = scanner.scan(forCharacterSet: .range("d"..."e")) {
       XCTAssertEqual(str, "ame")
     } else {
       XCTFail()
@@ -401,7 +401,7 @@ class StringScannerTests: XCTestCase {
   func testItDoesNotCrashIfItScanForNonFoundStringToRange() {
     let scanner = StringScanner(string: "Hello my name my omar")
     
-    if case .none = scanner.scan(forRange: "0"..<"9") {
+    if case .none = scanner.scan(forCharacterSet: .range("0"..<"9")) {
       
     } else {
       XCTFail()
@@ -411,13 +411,13 @@ class StringScannerTests: XCTestCase {
   func testItDoesNotScanBeyondLengthToRange() {
     let scanner = StringScanner(string: "Hello my name my omar8")
     
-    if case let .value(str)  = scanner.scan(forRange: "0"..."8") {
+    if case let .value(str)  = scanner.scan(forCharacterSet: .range("0"..."8")) {
       XCTAssertEqual(str, "Hello my name my omar8")
     } else {
       XCTFail()
     }
     
-    if case .end  = scanner.scan(forRange: "0"..."8") {
+    if case .end  = scanner.scan(forCharacterSet: .range("0"..."8")) {
       
     } else {
       XCTFail()
@@ -427,7 +427,7 @@ class StringScannerTests: XCTestCase {
   func testItReturnsEmptyString() {
     let scanner = StringScanner(string: "Hello my name my omar8")
     
-    if case let .value(str)  = scanner.scan(forRange: "0"..."8") {
+    if case let .value(str)  = scanner.scan(forCharacterSet: .range("0"..."8")) {
       XCTAssertEqual(str, "Hello my name my omar8")
     } else {
       XCTFail()

@@ -28,10 +28,13 @@ public enum CharacterSet: Containable {
   case alphaNumeric
   
   /// Characters in the string
-  case charactersInString(String)
+  case string(String)
   
   /// Containable Array
   case containables([Containable])
+  
+  /// Range (and closed range)
+  case range(Containable)
   
   /// Join with another containable
   public func join(characterSet: CharacterSet) -> CharacterSet {
@@ -60,10 +63,12 @@ public enum CharacterSet: Containable {
     case .alphaNumeric:
       return RangeContainable(ranges:
         CharacterSet.allLetters.containable, CharacterSet.numbers.containable)
-    case .charactersInString(let string):
+    case .string(let string):
       return ContainableString(stringOfCharacters: string)
     case .containables(let array):
       return RangeContainable(array: array)
+    case .range(let range):
+      return RangeContainable(ranges: range)
     }
   }
 }
