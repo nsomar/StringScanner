@@ -27,34 +27,36 @@ public enum ScannerResult {
   }
 }
 
+
+/// Contailable protocol
 public protocol Containable {
+  
+  
+  /// Returns wether a character is inside the range or not
+  ///
+  /// - parameter element: the character to search
+  ///
+  /// - returns: true if its inside, otherwise false
   func contains(character element: Character) -> Bool
 }
 
+
 extension Range: Containable {
   public func contains(character element: Character) -> Bool {
-    if let x = self as? Range<Character> {
-      return x.contains(element)
+    guard let element = String(element) as? Bound else {
+      return false
     }
     
-    if let x = self as? Range<String> {
-      return x.contains(String(element))
-    }
-    
-    return false
+    return self.contains(element)
   }
 }
+
 extension ClosedRange: Containable {
   public func contains(character element: Character) -> Bool {
-    
-    if let x = self as? ClosedRange<Character> {
-      return x.contains(element)
+    guard let element = String(element) as? Bound else {
+      return false
     }
     
-    if let x = self as? ClosedRange<String> {
-      return x.contains(String(element))
-    }
-    
-    return false
+    return self.contains(element)
   }
 }

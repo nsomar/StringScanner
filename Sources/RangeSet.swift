@@ -6,21 +6,6 @@
 //
 //
 
-
-private struct StringContainable: Containable {
-  let ranges: [Containable]
-  
-  init(ranges: Containable...) {
-    self.ranges = ranges
-  }
-  
-  func contains(character element: Character) -> Bool {
-    let filtered = ranges.filter { $0.contains(character: element) }
-    return filtered.count > 0
-  }
-}
-
-
 /// Range Set
 public enum RangeSet {
   
@@ -60,5 +45,18 @@ public enum RangeSet {
       return StringContainable(ranges:
         RangeSet.allLetters.containable, RangeSet.numbers.containable)
     }
+  }
+}
+
+private struct StringContainable: Containable {
+  let ranges: [Containable]
+  
+  init(ranges: Containable...) {
+    self.ranges = ranges
+  }
+  
+  func contains(character element: Character) -> Bool {
+    let filtered = ranges.filter { $0.contains(character: element) }
+    return filtered.count > 0
   }
 }
