@@ -1,5 +1,12 @@
 # StringScanner
 
+[![Build Status](https://travis-ci.org/oarrabi/StringScanner.svg?branch=master)](https://travis-ci.org/oarrabi/StringScanner)
+[![Platform](https://img.shields.io/badge/platform-osx-lightgrey.svg)](https://travis-ci.org/oarrabi/StringScanner)
+[![Platform](https://img.shields.io/badge/platform-ios-lightgrey.svg)](https://travis-ci.org/oarrabi/StringScanner)
+[![Language: Swift](https://img.shields.io/badge/language-swift-orange.svg)](https://travis-ci.org/oarrabi/StringScanner)
+[![CocoaPods](https://img.shields.io/cocoapods/v/StringScanner.svg)](https://cocoapods.org/pods/StringScanner)
+[![Carthage](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+
 `StringScanner` is a native swift implementation of a string scanner; a replacement of `NSScanner`. 
 
 `StringScanner` has been built by using swfit standard library only, and it does not depend on libFoundation. In that way it can be built on mac and linux, and can be build with static compilation in mind.
