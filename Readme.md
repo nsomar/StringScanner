@@ -179,9 +179,29 @@ scanner.scan(untilCharacerSet: set)
 This returns `This is a test `
 
 ## Installation
+You can install Swiftline using CocoaPods, carthage and Swift package manager
 
-## Example
+### CocoaPods
+    use_frameworks!
+    pod 'StringScanner'
+
+### Carthage
+    github 'oarrabi/StringScanner'
+
+### Swift Package Manager
+Add swiftline as dependency in your `Package.swift`
+
+```
+  import PackageDescription
+
+  let package = Package(name: "YourPackage",
+    dependencies: [
+      .Package(url: "https://github.com/oarrabi/StringScanner.git", majorVersion: 0, minor: 3),
+    ]
+  )
+```
 
 ## Tests
+Tests can be found [here](https://github.com/oarrabi/StringScanner/tree/master/Tests). 
 
-## Future Improvements
+Run them with `swift test`
