@@ -3,6 +3,7 @@ language: objective-c
 osx_image: xcode8
 
 script:
+- swift package generate-xcodeproj --enable-code-coverage
 - make test
 - pod lib lint --quick
 
