@@ -97,24 +97,24 @@ public class StringScanner {
   
   /// Peek until a range of chacaters is found
   /// Peek does not advance the internal string index
-  /// See `CharacterSet` for ready made range of characters
+  /// See `CharactersSet` for ready made range of characters
   ///
   /// - parameter range: the range to search
   ///
   /// - returns: returns a scanner result
-  public func peek(untilCharacterSet characerSet: CharacterSet) -> ScannerResult {
+  public func peek(untilCharacterSet characerSet: CharactersSet) -> ScannerResult {
       return _peek(untilCharacterSet: characerSet).0
   }
   
   
   /// Peek until a range of chacaters is found, return the character found too
   /// Peek does not advance the internal string index
-  /// See `CharacterSet` for ready made range of characters
+  /// See `CharactersSet` for ready made range of characters
   ///
   /// - parameter range: the range to search
   ///
   /// - returns: returns a scanner result
-  public func peek(forCharacterSet characterSet: CharacterSet) -> ScannerResult {
+  public func peek(forCharacterSet characterSet: CharactersSet) -> ScannerResult {
       return _peek(untilCharacterSet: characterSet, includeLast: true).0
   }
   
@@ -179,12 +179,12 @@ public class StringScanner {
   
   /// Scan until a characters of string is found
   /// Scan advances the internal string index
-  /// See `CharacterSet` for ready made range of characters
+  /// See `CharactersSet` for ready made range of characters
   ///
   /// - parameter range: the range to search
   ///
   /// - returns: returns a scanner result
-  public func scan(untilCharacterSet characterSet: CharacterSet) -> ScannerResult {
+  public func scan(untilCharacterSet characterSet: CharactersSet) -> ScannerResult {
       let res = _peek(untilCharacterSet: characterSet)
       
       return res.0.performIfValue {
@@ -195,12 +195,12 @@ public class StringScanner {
   
   /// Scan until a characters of string is found, , return the character found too
   /// Scan advances the internal string index
-  /// See `CharacterSet` for ready made range of characters
+  /// See `CharactersSet` for ready made range of characters
   ///
   /// - parameter range: the range to search
   ///
   /// - returns: returns a scanner result
-  public func scan(forCharacterSet characterSet: CharacterSet) -> ScannerResult {
+  public func scan(forCharacterSet characterSet: CharactersSet) -> ScannerResult {
       let res = _peek(untilCharacterSet: characterSet, includeLast: true)
       
       return res.0.performIfValue {
@@ -268,7 +268,7 @@ public class StringScanner {
   }
   
   private func _peek
-    (untilCharacterSet characterSet: CharacterSet, includeLast: Bool = false) -> (ScannerResult, Int?) {
+    (untilCharacterSet characterSet: CharactersSet, includeLast: Bool = false) -> (ScannerResult, Int?) {
       
       if index >= stringLength {
         return (.end, nil)

@@ -1,5 +1,5 @@
 //
-//  CharacterSets.swift
+//  CharactersSet.swift
 //  StringScanner
 //
 //  Created by Omar Abdelhafith on 26/10/2016.
@@ -7,7 +7,7 @@
 //
 
 /// Range Set
-public enum CharacterSet: Containable {
+public enum CharactersSet: Containable {
   
   /// All english letters set
   case allLetters
@@ -37,7 +37,7 @@ public enum CharacterSet: Containable {
   case range(Containable)
   
   /// Join with another containable
-  public func join(characterSet: CharacterSet) -> CharacterSet {
+  public func join(characterSet: CharactersSet) -> CharactersSet {
     let array = [characterSet.containable, self.containable]
     return .containables(array)
   }
@@ -55,14 +55,14 @@ public enum CharacterSet: Containable {
       return RangeContainable(ranges: "A"..."Z")
     case .allLetters:
       return RangeContainable(
-        ranges: CharacterSet.smallLetters.containable, CharacterSet.capitalLetters.containable)
+        ranges: CharactersSet.smallLetters.containable, CharactersSet.capitalLetters.containable)
     case .numbers:
       return RangeContainable(ranges: "0"..."9")
     case .space:
       return RangeContainable(ranges: " "..." ")
     case .alphaNumeric:
       return RangeContainable(ranges:
-        CharacterSet.allLetters.containable, CharacterSet.numbers.containable)
+        CharactersSet.allLetters.containable, CharactersSet.numbers.containable)
     case .string(let string):
       return ContainableString(stringOfCharacters: string)
     case .containables(let array):
