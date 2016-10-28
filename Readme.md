@@ -196,7 +196,7 @@ Add swiftline as dependency in your `Package.swift`
 
   let package = Package(name: "YourPackage",
     dependencies: [
-      .Package(url: "https://github.com/oarrabi/StringScanner.git", majorVersion: 0, minor: 3),
+      .Package(url: "https://github.com/oarrabi/StringScanner.git", majorVersion: 0),
     ]
   )
 ```
@@ -204,4 +204,7 @@ Add swiftline as dependency in your `Package.swift`
 ## Tests
 Tests can be found [here](https://github.com/oarrabi/StringScanner/tree/master/Tests). 
 
-Run them with `swift test`
+Run them with 
+```
+swift test
+```
