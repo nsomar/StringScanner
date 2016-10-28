@@ -1,6 +1,7 @@
 # StringScanner
 
 [![Build Status](https://travis-ci.org/oarrabi/StringScanner.svg?branch=master)](https://travis-ci.org/oarrabi/StringScanner)
+[![codecov](https://codecov.io/gh/oarrabi/StringScanner/branch/master/graph/badge.svg)](https://codecov.io/gh/oarrabi/StringScanner)
 [![Platform](https://img.shields.io/badge/platform-osx-lightgrey.svg)](https://travis-ci.org/oarrabi/StringScanner)
 [![Platform](https://img.shields.io/badge/platform-ios-lightgrey.svg)](https://travis-ci.org/oarrabi/StringScanner)
 [![Language: Swift](https://img.shields.io/badge/language-swift-orange.svg)](https://travis-ci.org/oarrabi/StringScanner)
