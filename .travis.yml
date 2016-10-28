@@ -1,0 +1,10 @@
+sudo: false
+language: objective-c
+osx_image: xcode8
+
+script:
+- swift test
+- pod lib lint --quick
+
+after_success:
+- bash <(curl -s https://codecov.io/bash)
