@@ -35,7 +35,7 @@ public class StringScanner {
   /// - parameter string: The string to scan
   ///
   /// - returns:  a new StringScanner
-  init(string: String) {
+  public init(string: String) {
     self.string = string
     self.index = 0
   }
