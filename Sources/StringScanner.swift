@@ -16,7 +16,7 @@ public class StringScanner {
   private var index: Int
   
   private var stringLength: Int {
-    return string.lengthOfBytes(using: .utf8)
+    return string.characters.count
   }
   
   private var stringIndex: String.Index {
@@ -248,7 +248,7 @@ public class StringScanner {
       return (.none, nil)
     }
     
-    return (.value(captured), captured.lengthOfBytes(using: .utf8))
+    return (.value(captured), captured.characters.count)
   }
   
   private func _peek(untilString search: String) -> (ScannerResult, Int?) {
@@ -293,7 +293,7 @@ public class StringScanner {
     
     
     if remainingString.hasPrefix(search) {
-      return (.value(search), index + search.lengthOfBytes(using: .utf8))
+      return (.value(search), index + search.characters.count)
     }
     
     return (.none, nil)
