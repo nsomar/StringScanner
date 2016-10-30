@@ -458,6 +458,29 @@ class StringScannerTests: XCTestCase {
     XCTAssertEqual(scanner.remainingString, "")
   }
   
+  func testItCanDoTransactions() {
+    let scanner = StringScanner(string: "Hello my name my omar8")
+    
+    scanner.transaction {
+      if case let .value(str)  = scanner.scan(forCharacterSet: .range("0"..."8")) {
+        XCTAssertEqual(str, "Hello my name my omar8")
+      } else {
+        XCTFail()
+      }
+      
+      XCTAssertEqual(scanner.remainingString, "")
+    }
+    
+    XCTAssertEqual(scanner.remainingString, "Hello my name my omar8")
+    
+    scanner.transaction {
+      _ = scanner.drop(length: 5)
+      XCTAssertEqual(scanner.remainingString, " my name my omar8")
+    }
+    
+    XCTAssertEqual(scanner.remainingString, "Hello my name my omar8")
+  }
+  
   static var allTests : [(String, (StringScannerTests) -> () throws -> Void)] {
     return [
       ("testCanScanForCharacters", testCanScanForCharacters),
