@@ -78,7 +78,7 @@ private struct ContainableString: Containable {
   let stringOfCharacters: String
   
   func contains(character element: Character) -> Bool {
-    return stringOfCharacters.contains(String(element))
+    return stringOfCharacters.find(string: String(element)) != nil
   }
 }
 

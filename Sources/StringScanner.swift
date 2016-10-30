@@ -26,7 +26,7 @@ public class StringScanner {
   
   /// Returns the remaining string
   public var remainingString: String {
-    return string.substring(from: stringIndex)
+    return string[from: stringIndex]
   }
   
   
@@ -56,7 +56,7 @@ public class StringScanner {
     
     let end = endIndex(forString: string, length: index + length)
     
-    let subString = string.substring(with: stringIndex..<end)
+    let subString = string[with: stringIndex..<end]
     
     return .value(subString)
   }
@@ -274,14 +274,14 @@ public class StringScanner {
       return (.end, nil)
     }
     
-    guard let r = remainingString.range(of: search) else {
+    guard let r = remainingString.find(string: search) else {
       return (.none, nil)
     }
     
     let position = remainingString.distance(from: remainingString.startIndex,
-                                            to: r.lowerBound)
+                                            to: r)
     let end = endIndex(forString: remainingString, length: position)
-    let retString = ScannerResult.value(remainingString.substring(to: end))
+    let retString = ScannerResult.value(remainingString[to: end])
     return (retString, position)
   }
   
@@ -296,7 +296,7 @@ public class StringScanner {
         if characterSet.contains(character: character) {
           let end = endIndex(forString: remainingString, length: index + (includeLast ? 1 : 0))
           
-          let str = remainingString.substring(to: end)
+          let str = remainingString[to: end]
           return (.value(str), index + (includeLast ? 1 : 0))
         }
       }
