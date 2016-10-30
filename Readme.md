@@ -179,6 +179,12 @@ scanner.scan(untilCharacerSet: set)
 
 This returns `This is a test `
 
+### Transactions
+`scanner.reset()` resets the internal index to zero
+
+### Reseting the internal index
+`scanner.reset()` resets the internal index to zero
+
 ## Installation
 You can install Swiftline using CocoaPods, carthage and Swift package manager
 

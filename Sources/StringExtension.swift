@@ -6,9 +6,17 @@
 //
 //
 
+
+// MARK: - Utility string functions, not relying on foundation
 extension String {
   
-  func find(string: String) -> String.Index? {
+  
+  /// Finds a string in the string
+  ///
+  /// - parameter string: the string to find
+  ///
+  /// - returns: the index
+  public func find(string: String) -> String.Index? {
     var currentIndex = self.startIndex
     var searchIndex = string.startIndex
     
@@ -36,31 +44,90 @@ extension String {
     }
   }
   
-  subscript(from index: String.Index) -> String {
+  
+  /// Checks if the string is prefixed by another string
+  ///
+  /// - parameter string: string to search
+  ///
+  /// - returns: true if found
+  public func isPrefixed(by string: String) -> Bool {
+    var currentIndex = self.startIndex
+    var searchIndex = string.startIndex
+    
+    while true {
+      if currentIndex == self.endIndex {
+        return false
+      }
+      
+      if self[currentIndex] == string[searchIndex] {
+        currentIndex = self.index(after: currentIndex)
+        searchIndex = string.index(after: searchIndex)
+        
+        if searchIndex == string.endIndex {
+          return true
+        }
+      } else {
+        return false
+      }
+    }
+  }
+  
+  
+  /// Substring from index
+  ///
+  /// - parameter index: the index to start
+  ///
+  /// - returns: the substring
+  public subscript(from index: String.Index) -> String {
     return String(self.characters[index..<self.endIndex])
   }
   
-  subscript(from index: Int) -> String {
+  /// Substring from index
+  ///
+  /// - parameter index: the index to start
+  ///
+  /// - returns: the substring
+  public subscript(from index: Int) -> String {
     let start = self.index(self.startIndex, offsetBy: index)
     return self[from: start]
   }
   
-  subscript(to index: String.Index) -> String {
+  /// Substring to index
+  ///
+  /// - parameter index: the index to end
+  ///
+  /// - returns: the substring
+  public subscript(to index: String.Index) -> String {
     return String(self.characters[self.startIndex..<index])
   }
   
-  subscript(to index: Int) -> String {
+  /// Substring to index
+  ///
+  /// - parameter index: the index to end
+  ///
+  /// - returns: the substring
+  public subscript(to index: Int) -> String {
     let end = self.index(self.startIndex, offsetBy: index)
     return self[to: end]
   }
   
-  subscript(with ranage: Range<String.Index>) -> String {
+  /// Substring with range
+  ///
+  /// - parameter range: the range
+  ///
+  /// - returns: the substring
+  public subscript(with ranage: Range<String.Index>) -> String {
     return String(self.characters[ranage])
   }
   
-  subscript(with index: Range<Int>) -> String {
-    let start = self.index(self.startIndex, offsetBy: index.lowerBound)
-    let end = self.index(self.startIndex, offsetBy: index.upperBound)
+  /// Substring with range
+  ///
+  /// - parameter range: the range
+  ///
+  /// - returns: the substring
+  public subscript(with range: Range<Int>) -> String {
+    let start = self.index(self.startIndex, offsetBy: range.lowerBound)
+    let end = self.index(self.startIndex, offsetBy: range.upperBound)
     return self[with: start..<end]
   }
 }

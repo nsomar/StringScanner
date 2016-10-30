@@ -226,14 +226,12 @@ public class StringScanner {
   }
   
   
-  /// Add to documentation
   /// Resets the internal index
   public func reset() {
     index = 0
   }
   
   
-  /// Add to documentation
   /// Perform a transaction, after the block returns, the index will be returned to what it was before calling the function
   ///
   /// - parameter block: the block called
@@ -310,7 +308,7 @@ public class StringScanner {
     }
     
     
-    if remainingString.hasPrefix(search) {
+    if remainingString.isPrefixed(by: search) {
       return (.value(search), index + search.characters.count)
     }
     

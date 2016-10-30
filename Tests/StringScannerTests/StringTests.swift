@@ -69,4 +69,13 @@ class StringTests: XCTestCase {
     XCTAssertEqual(s[with: 6..<7], "e")
   }
   
+  func testItCanCheckForPrefix() {
+    let s = "My name is omar"
+    
+    XCTAssertTrue(s.isPrefixed(by: "My nam"))
+    XCTAssertTrue(s.isPrefixed(by: "My name is"))
+    XCTAssertTrue(s.isPrefixed(by: "My name is omar"))
+    XCTAssertFalse(s.isPrefixed(by: " omar"))
+  }
+  
 }
