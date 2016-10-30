@@ -225,6 +225,12 @@ public class StringScanner {
     return true
   }
   
+  
+  /// Resets the internal index
+  public func reset() {
+    index = 0
+  }
+  
   // MARK: Private
   
   private func endIndex(forString string: String, length: Int) -> String.Index {

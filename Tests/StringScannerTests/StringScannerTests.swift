@@ -436,6 +436,28 @@ class StringScannerTests: XCTestCase {
     XCTAssertEqual(scanner.remainingString, "")
   }
   
+  func testItCanRestTheScanner() {
+    let scanner = StringScanner(string: "Hello my name my omar8")
+    
+    if case let .value(str)  = scanner.scan(forCharacterSet: .range("0"..."8")) {
+      XCTAssertEqual(str, "Hello my name my omar8")
+    } else {
+      XCTFail()
+    }
+    
+    XCTAssertEqual(scanner.remainingString, "")
+    
+    scanner.reset()
+    
+    if case let .value(str)  = scanner.scan(forCharacterSet: .range("0"..."8")) {
+      XCTAssertEqual(str, "Hello my name my omar8")
+    } else {
+      XCTFail()
+    }
+    
+    XCTAssertEqual(scanner.remainingString, "")
+  }
+  
   static var allTests : [(String, (StringScannerTests) -> () throws -> Void)] {
     return [
       ("testCanScanForCharacters", testCanScanForCharacters),
@@ -448,6 +470,7 @@ class StringScannerTests: XCTestCase {
       ("testItCanPeekAndScanProgress", testItCanPeekAndScanProgress),
       ("testItCanPeekUntilAPattern", testItCanPeekUntilAPattern),
       ("testItCanScanUntilAPattern", testItCanScanUntilAPattern),
+      ("testItCanRestTheScanner", testItCanRestTheScanner),
 //      ("XtestItCanPeekUntilAPatternNotGreedy", XtestItCanPeekUntilAPatternNotGreedy),
       ("testItCanPeekUntilAString", testItCanPeekUntilAString),
       ("testItCanScanUntilAString", testItCanScanUntilAString),
