@@ -142,7 +142,7 @@ public class StringScanner {
     let res = _peek(untilString: search)
     
     return res.0.performIfValue {
-      index = res.1!
+      index += res.1!
     }
   }
   
