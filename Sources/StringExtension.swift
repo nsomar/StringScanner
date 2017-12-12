@@ -32,7 +32,7 @@ extension String {
         if searchIndex == string.endIndex {
           return self.index(
             currentIndex,
-            offsetBy: -string.characters.count)
+            offsetBy: -string.count)
         }
       } else {
         currentIndex = self.index(after: currentIndex)
@@ -79,7 +79,7 @@ extension String {
   ///
   /// - returns: the substring
   public subscript(from index: String.Index) -> String {
-    return String(self.characters[index..<self.endIndex])
+    return String(self[index..<self.endIndex])
   }
   
   /// Substring from index
@@ -98,7 +98,7 @@ extension String {
   ///
   /// - returns: the substring
   public subscript(to index: String.Index) -> String {
-    return String(self.characters[self.startIndex..<index])
+    return String(self[self.startIndex..<index])
   }
   
   /// Substring to index
@@ -117,7 +117,7 @@ extension String {
   ///
   /// - returns: the substring
   public subscript(with ranage: Range<String.Index>) -> String {
-    return String(self.characters[ranage])
+    return String(self[ranage])
   }
   
   /// Substring with range

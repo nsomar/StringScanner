@@ -16,7 +16,7 @@ public class StringScanner {
   private var index: Int
   
   private var stringLength: Int {
-    return string.characters.count
+    return string.count
   }
   
   private var stringIndex: String.Index {
@@ -264,7 +264,7 @@ public class StringScanner {
       return (.none, nil)
     }
     
-    return (.value(captured), captured.characters.count)
+    return (.value(captured), captured.count)
   }
   
   private func _peek(untilString search: String) -> (ScannerResult, Int?) {
@@ -290,7 +290,7 @@ public class StringScanner {
         return (.end, nil)
       }
       
-      for (index, character) in remainingString.characters.enumerated() {
+      for (index, character) in remainingString.enumerated() {
         if characterSet.contains(character: character) {
           let end = endIndex(forString: remainingString, length: index + (includeLast ? 1 : 0))
           
@@ -309,7 +309,7 @@ public class StringScanner {
     
     
     if remainingString.isPrefixed(by: search) {
-      return (.value(search), index + search.characters.count)
+      return (.value(search), index + search.count)
     }
     
     return (.none, nil)
